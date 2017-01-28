@@ -142,11 +142,13 @@ function WebpackPluginGraphqlSchemaHot(options) {
         this.generateGraphqlIntrospectionFiles(
           this.schemaPath,
           this.output.json,
-          this.output.txt, done
+          this.output.txt,
+          done
         );
       }
     } catch (e) {
       this.err('\n' + e);
+      done();
     }
   };
 }
