@@ -3,7 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
 [![npm](https://img.shields.io/npm/dt/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
 
-This is Webpack plugin which tracks changes in your GraphQL Schema (main js file and only its dependencies) and generate `json` and `txt` files.
+This is Webpack plugin which tracks changes in your GraphQL Schema files (main js file and only its dependencies) and generates schema introspection in `json` and `txt` formats.
 
 ## Install
 
