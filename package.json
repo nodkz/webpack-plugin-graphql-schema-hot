@@ -1,0 +1,33 @@
+{
+  "name": "webpack-plugin-graphql-schema-hot",
+  "version": "0.0.1",
+  "description": "Webpack plugin which track changes in your schema files and generate `json` and `txt` files.",
+  "main": "index.js",
+  "repository": "https://github.com/nodkz/webpack-plugin-graphql-schema-hot",
+  "author": "Nodkz (pavel.chertorogov@gmail.com)",
+  "keywords": [
+    "graphql",
+    "schema",
+    "regenerate",
+    "webpack",
+    "plugin",
+    "hot"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodkz/webpack-plugin-graphql-schema-hot/issues"
+  },
+  "homepage": "https://github.com/nodkz/webpack-plugin-graphql-schema-hot",
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "graphql": "^0.9.1"
+  },
+  "dependencies": {
+    "decache": "^4.1.0"
+  },
+  "peerDependencies": {
+    "graphql": ">=0.7.0 || >=0.8.0 || >=0.9.0"
+  }
+}

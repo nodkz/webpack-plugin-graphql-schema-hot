@@ -1,0 +1,23 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "no-underscore-dangle": 0,
+    "arrow-body-style": 0,
+    "no-unused-expressions": 0,
+    "no-plusplus": 0,
+    "no-console": 0,
+    "func-names": 0,
+    "global-require": 0,
+    "prefer-template": 0,
+    "spaced-comment": 0,
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore",
+    }],
+    "no-param-reassign": 0,
+    "import/no-dynamic-require": 0
+  },
+}
