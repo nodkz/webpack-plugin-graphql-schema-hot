@@ -1,6 +1,7 @@
 # webpack-plugin-graphql-schema-hot
 
 [![NPM version](https://img.shields.io/npm/v/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
+[![npm](https://img.shields.io/npm/dt/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
 
 This is Webpack plugin which tracks changes in your GraphQL Schema (main js file and only its dependencies) and generate `json` and `txt` files.
 
@@ -81,9 +82,9 @@ const config = {
 
 
 ## Recommended modules
-- [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) if you use `Relay`, this plugin wraps standard `babelRelayPlugin` and reload it if `schema.json` file was changed.
-- [eslint-plugin-graphql](https://github.com/apollostack/eslint-plugin-graphql) if you use `Atom` editor, this plugin may also track changes of `schema.json` file on fly.
-- [js-graphql-intellij-plugin](https://github.com/jimkyndemeyer/js-graphql-intellij-plugin) if you use `WebStorm` or any other IntelliJ IDEA editor.
+- [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) 🔥 if you use `Relay`, this plugin wraps standard `babelRelayPlugin` and reload it if `schema.json` file was changed.
+- [eslint-plugin-graphql](https://github.com/apollostack/eslint-plugin-graphql) 🔥 if you use `Atom` editor, this plugin may also track changes of `schema.json` file on fly.
+- [js-graphql-intellij-plugin](https://github.com/jimkyndemeyer/js-graphql-intellij-plugin) 🔥 if you use `WebStorm` or any other IntelliJ IDEA editor.
 
 
 ## License
