@@ -3,7 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
 [![npm](https://img.shields.io/npm/dt/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
 
-This is Webpack plugin which tracks changes in your GraphQL Schema files (main js file and only its dependencies) and generates schema introspection in `json` and `txt` formats.
+This is Webpack plugin which tracks changes in your GraphQL Schema files and re/generates schema introspection in `json` and `txt` formats. Just provide absolute path to your schema js and paths for output files in plugin options. And for every webpack rebuild plugin will check if changed files somehow related to schema and if so, will emmit new json and txt files. After that this files may be provided to eslint, babel or any other tool. Links to recommended tools can be found below.
 
 ## Install
 
@@ -51,26 +51,26 @@ const config = {
 - **`schemaPath`**
   - **Required**
   - Type: `String`
-  - Absolute path to your graphql schema js file. Only this file and its dependencies will be watched.
+  - **Absolute path** to your graphql schema js file. Only this file and its dependencies will trigger generation of new files.
 - **`output`**
   - **Required**
   - Type: `Function` or `Object`
-  - If `Object`
-    - You should provide `json` and/or `txt` properties with the absolute output file path.
-  - If `Function`
-    - `(schemaPath) => { /* you generation code */ }`. Sometimes you may want to generate schema in some exotic way, eg. under another babel environment. Just provide your function, which will be called instead of internal.
+  - If `Object`:
+    - You should provide `json` and/or `txt` properties with the **absolute** file path.
+  - If `Function`:
+    - `(schemaPath) => { /* you generation code */ }`. Sometimes you may want to generate schema in some exotic way, eg. under another babel environment. Just provide your function, which will be called instead of internal.
 - **`runOnStart`**
   - Type: `Boolean`
   - Default: `false`
-  - Generate schema files on start, before Webpack starts compile your files.
+  - Generate schema files on start, before Webpack starts to compile your files.
 - **`waitOnStart`**
   - Type: `Integer`
   - Default: `0`
-  - How many millisecond wait after generating schema files on start, before Webpack proceed. If you use Relay, install [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) and set `2000`, that allows to reload `relayBabelPlugin` with new schema before Webpack proceed.
+  - How many milliseconds wait after generating schema files on start, before Webpack proceed. If you use Relay, install [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) and set `2000`, that allows to reload `relayBabelPlugin` with new schema before Webpack proceed.
 - **`waitOnRebuild`**
   - Type: `Integer`
   - Default: `0`
-  - How many millisecond wait after generating schema files on rebuild, before Webpack proceed.
+  - How many milliseconds wait after generating schema files on rebuild, before Webpack proceed.
 - **`verbose`**
   - Type: `Boolean`
   - Default: `false`
@@ -78,11 +78,11 @@ const config = {
 - **`hideErrors`**
   - Type: `Boolean`
   - Default: `false`
-  - Hide runtime plugin errors. If you provide wrong options to plugin, it will show them even `hideErrors=true`.
+  - Hide runtime plugin errors. If you provide wrong options to plugin, it will show startup errors even `hideErrors=true`.
 
 
-## Recommended modules
-- [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) 🔥 if you use `Relay`, this plugin wraps standard `babelRelayPlugin` and reload it if `schema.json` file was changed.
+## Recommended tools
+- [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) 🔥 if you use `Relay`, this plugin wraps standard `babelRelayPlugin` and hot reload it if `schema.json` file was changed without restarting dev server.
 - [eslint-plugin-graphql](https://github.com/apollostack/eslint-plugin-graphql) 🔥 if you use `Atom` editor, this plugin may also track changes of `schema.json` file on fly.
 - [js-graphql-intellij-plugin](https://github.com/jimkyndemeyer/js-graphql-intellij-plugin) 🔥 if you use `WebStorm` or any other IntelliJ IDEA editor.
 
