@@ -5,6 +5,8 @@
 
 This is Webpack plugin which tracks changes in your GraphQL Schema files and re/generates schema introspection in `json` and `txt` formats. Just provide absolute path to your schema js and paths for output files in plugin options. And for every webpack rebuild plugin will check if changed files somehow related to schema and if so, will emmit new json and txt files. After that this files may be provided to eslint, babel or any other tool. Links to recommended tools can be found below.
 
+<img width="777" alt="screen shot 2017-01-30 14 52 29" src="https://cloud.githubusercontent.com/assets/1946920/22417218/6799cf1c-e6fd-11e6-8f4d-d3394077315d.png">
+
 ## Install
 
 ```
