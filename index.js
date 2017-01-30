@@ -158,6 +158,7 @@ WebpackPluginGraphqlSchemaHot.prototype.start = function (compiler, done) {
     this.log('Build GraphQL Schema files due opts.runOnStart = true');
     this.buildSchema(() => {
       if (this.waitOnStart) {
+        this.log('Freeze Webpack due opts.waitOnStart = ' + this.waitOnStart);
         setTimeout(done, this.waitOnStart);
       } else {
         done();
@@ -184,6 +185,7 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, do
     this.log('GraphQL Schema files was changed. Run rebuild...');
     this.buildSchema(() => {
       if (this.waitOnRebuild) {
+        this.log('Freeze Webpack due opts.waitOnRebuild = ' + this.waitOnRebuild);
         setTimeout(done, this.waitOnRebuild);
       } else {
         done();
