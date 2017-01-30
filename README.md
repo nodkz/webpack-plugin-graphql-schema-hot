@@ -60,6 +60,7 @@ const config = {
   - If `Object`:
     - You should provide `json` and/or `txt` properties with the **absolute** file path.
   - If `Function`:
+    - This function may be `async` (in this case function should return `Promise`)
     - `(schemaPath) => { /* you generation code */ }`. Sometimes you may want to generate schema in some exotic way, eg. under another babel environment. Just provide your function, which will be called instead of internal.
 - **`runOnStart`**
   - Type: `Boolean`

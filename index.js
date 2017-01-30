@@ -137,7 +137,13 @@ function WebpackPluginGraphqlSchemaHot(options) {
   this.buildSchema = (done) => {
     try {
       if (typeof this.output === 'function') {
-        this.output(this.schemaPath);
+        Promise
+          .resolve(() => this.output(this.schemaPath))
+          .then(() => done())
+          .catch((e) => {
+            this.err('\n' + e);
+            done();
+          });
       } else {
         this.generateGraphqlIntrospectionFiles(
           this.schemaPath,
