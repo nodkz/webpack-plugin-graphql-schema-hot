@@ -138,7 +138,7 @@ function WebpackPluginGraphqlSchemaHot(options) {
     try {
       if (typeof this.output === 'function') {
         Promise
-          .resolve(() => this.output(this.schemaPath))
+          .resolve(this.output(this.schemaPath))
           .then(() => done())
           .catch((e) => {
             this.err('\n' + e);

@@ -1,5 +1,8 @@
 ## master
 
+## 0.0.5 (January 30, 2017)
+- fix: Promise.resolve with `opts.output` as function
+
 ## 0.0.4 (January 30, 2017)
 - feat: `opts.output` now may be async function which returns Promise
 - fix: `opts.output` does not unfreeze Webpack
