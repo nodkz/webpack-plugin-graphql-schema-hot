@@ -1,7 +1,7 @@
 # webpack-plugin-graphql-schema-hot
 
 [![NPM version](https://img.shields.io/npm/v/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
-[![npm](https://img.shields.io/npm/dt/webpack-plugin-graphql-schema-hot.svg)](https://www.npmjs.com/package/webpack-plugin-graphql-schema-hot)
+[![npm](https://img.shields.io/npm/dt/webpack-plugin-graphql-schema-hot.svg)](http://www.npmtrends.com/webpack-plugin-graphql-schema-hot)
 
 This is Webpack plugin which tracks changes in your GraphQL Schema files and re/generates schema introspection in `json` and `txt` formats. Just provide absolute path to your schema js and paths for output files in plugin options. And for every webpack rebuild plugin will check if changed files somehow related to schema and if so, will emmit new json and txt files. After that this files may be provided to eslint, babel or any other tool. Links to recommended tools can be found below.
 
