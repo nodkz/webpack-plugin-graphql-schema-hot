@@ -1,6 +1,12 @@
 const fs = require('fs').default || require('fs');
+const minimatch = require('minimatch');
 const decache = require('decache').default || require('decache');
 
+function matchesGlobs(filePath, globs) {
+  return (globs || []).some(
+    glob => minimatch(filePath, glob, { matchBase: true })
+  );
+}
 
 function WebpackPluginGraphqlSchemaHot(options) {
   this._canRun = true;
@@ -21,6 +27,7 @@ function WebpackPluginGraphqlSchemaHot(options) {
   this.rebuildTimestamp = Infinity;
   this.waitOnStart = opts.waitOnStart || 0;
   this.waitOnRebuild = opts.waitOnRebuild || 0;
+  this.excludes = opts.excludes;
 
   if (!opts.schemaPath || typeof opts.schemaPath !== 'string') {
     startupError(
@@ -80,22 +87,30 @@ function WebpackPluginGraphqlSchemaHot(options) {
   };
 
   this.findDependencies = (module, result) => {
-    if (result.modules.has(module)) return result; // circular dependency
-    if (module.buildTimestamp) {
-      result.modules.add(module);
-      if (this.rebuildTimestamp < module.buildTimestamp) {
-        // remove current module and parent from require cache
-        this.log('Updated ' + module.resource);
-        decache(module.resource);
-        if (module.issuer && module.issuer.resource) {
-          decache(module.issuer.resource);
-        }
+    if (result.modules.has(module) || result.excluded.has(module)) {
+      return result; // circular dependency
+    }
 
-        if (result.lastBuildTimestamp < module.buildTimestamp) {
-          result.lastBuildTimestamp = module.buildTimestamp;
+    if (module.buildTimestamp) {
+      if (this.excludes && matchesGlobs(module.resource, this.excludes)) {
+        result.excluded.add(module);
+      } else {
+        result.modules.add(module);
+        if (this.rebuildTimestamp < module.buildTimestamp) {
+          // remove current module and parent from require cache
+          this.log('Updated ' + module.resource);
+          decache(module.resource);
+          if (module.issuer && module.issuer.resource) {
+            decache(module.issuer.resource);
+          }
+
+          if (result.lastBuildTimestamp < module.buildTimestamp) {
+            result.lastBuildTimestamp = module.buildTimestamp;
+          }
         }
       }
     }
+
     if (!module.dependencies) return result;
     module.dependencies.forEach((dep) => {
       if (dep.module) {
@@ -181,6 +196,7 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, do
   const result = {
     lastBuildTimestamp: this.rebuildTimestamp,
     modules: new Set(),
+    excluded: new Set(),
   };
   const entryModule = this.findSchemaEntripointModule(compilation, this.schemaPath);
   this.findDependencies(entryModule, result);

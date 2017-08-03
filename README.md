@@ -43,6 +43,7 @@ const config = {
       waitOnRebuild: 0, // default: 0, set 2000 if you use babel-plugin-transform-relay-hot
       verbose: true, // default: false
       hideErrors: false, // default: false
+      excludes: ['**/__generated__/**'], // default: null
     }),
   ]
 }
@@ -82,7 +83,10 @@ const config = {
   - Type: `Boolean`
   - Default: `false`
   - Hide runtime plugin errors. If you provide wrong options to plugin, it will show startup errors even `hideErrors=true`.
-
+ - **`excludes`**
+   - Type: `Array of globs`
+   - Default: `null`
+   - Do not track changes in files which globs match filename. You should provide glob for absolute path, eg. `**/temp/**`, just `temp` or `temp/` won't match all files inside the directory. 
 
 ## Recommended tools
 - [babel-plugin-transform-relay-hot](https://github.com/nodkz/babel-plugin-transform-relay-hot) 🔥 if you use `Relay`, this plugin wraps standard `babelRelayPlugin` and hot reload it if `schema.json` file was changed without restarting dev server.
