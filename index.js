@@ -120,6 +120,23 @@ function WebpackPluginGraphqlSchemaHot(options) {
     return result;
   };
 
+  this.handleCommonErrors = (e) => {
+    if (e && e.message) {
+      if (e.message.indexOf('multiple versions of GraphQL')) {
+        this.err(
+          'Multiple versions of GraphQL installed in your node_modules directory.\n' +
+          '  - Please completely remove node_modules folder and re-install all packages from scratch.\n' +
+          '  - OR go to node_modules/webpack-plugin-graphql-schema-hot/node_modules/ and remove graphql-js package from there.\n' +
+          'This package uses `graphql-js` as peerDependency, so if you got this error then it seems that your package manager by mistake install multiple `graphql-js` packages.'
+        );
+      } else {
+        this.err(e.message);
+      }
+    } else {
+      this.err(e);
+    }
+  };
+
   this.generateGraphqlIntrospectionFiles = (schemaPath, jsonPath, txtPath, done) => {
     const graphql = require('graphql').default || require('graphql');
     decache(schemaPath);
@@ -133,13 +150,19 @@ function WebpackPluginGraphqlSchemaHot(options) {
           fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
           this.log('Write new ' + jsonPath);
         }
-      }).then(() => {
+      })
+      .catch((e) => this.handleCommonErrors(e))
+      .then(() => {
         if (done) done();
       });
     }
 
     if (txtPath) {
-      fs.writeFileSync(txtPath, graphql.printSchema(schema));
+      try {
+        fs.writeFileSync(txtPath, graphql.printSchema(schema));
+      } catch (e) {
+        this.handleCommonErrors(e);
+      }
       this.log('Write new ' + txtPath);
     }
 

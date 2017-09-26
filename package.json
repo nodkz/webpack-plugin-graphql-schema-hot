@@ -1,6 +1,6 @@
 {
   "name": "webpack-plugin-graphql-schema-hot",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Webpack plugin which track changes in your schema files and generate `json` and `txt` files.",
   "main": "index.js",
   "repository": "https://github.com/nodkz/webpack-plugin-graphql-schema-hot",
@@ -29,6 +29,6 @@
     "minimatch": "^3.0.4"
   },
   "peerDependencies": {
-    "graphql": ">=0.7.0 || >=0.8.0 || >=0.9.0"
+    "graphql": ">=0.7.0 || >=0.8.0 || >=0.9.0 || >=0.10.0 || >=0.11.0"
   }
 }
