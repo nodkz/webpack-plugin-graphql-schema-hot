@@ -72,7 +72,7 @@ function WebpackPluginGraphqlSchemaHot(options) {
   this.findSchemaEntripointModule = (compilation, absolutePath) => {
     const result = compilation.modules.filter(o => (o.resource === absolutePath));
     if (!result || !Array.isArray(result) || result.length < 1) {
-      this.err('Can not found GraphQL Schema entrypoint file `' + absolutePath + '` in webpack build.');
+      this.err('Cannot find GraphQL Schema entrypoint file `' + absolutePath + '` in webpack build.');
       return {};
     }
     if (result.length > 1) {
@@ -214,7 +214,16 @@ WebpackPluginGraphqlSchemaHot.prototype.start = function (compiler, done) {
 };
 
 WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, done) {
-  if (!this._canRun) return;
+  if (!this._canRun) {
+    done();
+    return;
+  }
+
+  // Skip watching for separate ExtractTextPlugin compilations
+  if (compilation.name && compilation.name.indexOf('extract-text-webpack-plugin') === 0) {
+    done();
+    return;
+  }
 
   const result = {
     lastBuildTimestamp: this.rebuildTimestamp,
@@ -224,7 +233,7 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, do
   const entryModule = this.findSchemaEntripointModule(compilation, this.schemaPath);
   this.findDependencies(entryModule, result);
 
-  this.log('Watched changes in ' + result.modules.size + ' files');
+  this.log('Watching changes in ' + result.modules.size + ' files');
 
   if (this.rebuildTimestamp < result.lastBuildTimestamp) {
     this.log('GraphQL Schema files was changed. Run rebuild...');
