@@ -3,14 +3,12 @@ const minimatch = require('minimatch');
 const decache = require('decache').default || require('decache');
 
 function matchesGlobs(filePath, globs) {
-  return (globs || []).some(
-    glob => minimatch(filePath, glob, { matchBase: true })
-  );
+  return (globs || []).some(glob => minimatch(filePath, glob, { matchBase: true }));
 }
 
 function WebpackPluginGraphqlSchemaHot(options) {
   this._canRun = true;
-  const startupError = (msg) => {
+  const startupError = msg => {
     this._canRun = false;
     console.error('[WebpackPluginGraphqlSchemaHot]:\n' + msg);
   };
@@ -32,13 +30,10 @@ function WebpackPluginGraphqlSchemaHot(options) {
   if (!opts.schemaPath || typeof opts.schemaPath !== 'string') {
     startupError(
       '`opts.schemaPath` is required and should be \n' +
-      '   an absolute path to your graphql schema JS file'
+        '   an absolute path to your graphql schema JS file'
     );
   } else if (!fs.existsSync(opts.schemaPath)) {
-    startupError(
-      '`opts.schemaPath` provided file does not exists \n' +
-      '   ' + opts.schemaPath
-    );
+    startupError('`opts.schemaPath` provided file does not exists \n   ' + opts.schemaPath);
   } else {
     this.schemaPath = opts.schemaPath;
   }
@@ -46,9 +41,9 @@ function WebpackPluginGraphqlSchemaHot(options) {
   if (typeof opts.output !== 'function' && !opts.output.json && !opts.output.txt) {
     startupError(
       '`opts.output` is required and should be\n' +
-      '   object with at least one property { json: \'path\', /* and/or */ txt: \'path\' }\n' +
-      '   or\n' +
-      '   function if you want to generate schema yourself, called when schema files was changed'
+        "   object with at least one property { json: 'path', /* and/or */ txt: 'path' }\n" +
+        '   or\n' +
+        '   function if you want to generate schema yourself, called when schema files was changed'
     );
   } else {
     this.output = opts.output;
@@ -57,26 +52,32 @@ function WebpackPluginGraphqlSchemaHot(options) {
   ///////////
   // METHODS
   ///////////
-  this.log = (msg) => {
+  this.log = msg => {
     if (this.verbose) {
       console.log('[GraphqlSchemaHot]:', msg);
     }
   };
 
-  this.err = (msg) => {
+  this.err = msg => {
     if (!this.hideErrors) {
       console.error('[ERROR][GraphqlSchemaHot]:', msg);
     }
   };
 
   this.findSchemaEntripointModule = (compilation, absolutePath) => {
-    const result = compilation.modules.filter(o => (o.resource === absolutePath));
+    const result = compilation.modules.filter(o => o.resource === absolutePath);
     if (!result || !Array.isArray(result) || result.length < 1) {
-      this.err('Cannot find GraphQL Schema entrypoint file `' + absolutePath + '` in webpack build.');
+      this.err(
+        'Cannot find GraphQL Schema entrypoint file `' + absolutePath + '` in webpack build.'
+      );
       return {};
     }
     if (result.length > 1) {
-      this.err('Something strange with Webpack. Founded more than 1 module with path `' + absolutePath + '`.');
+      this.err(
+        'Something strange with Webpack. Founded more than 1 module with path `' +
+          absolutePath +
+          '`.'
+      );
     }
     const mod = result[0];
     if (!mod) {
@@ -112,7 +113,7 @@ function WebpackPluginGraphqlSchemaHot(options) {
     }
 
     if (!module.dependencies) return result;
-    module.dependencies.forEach((dep) => {
+    module.dependencies.forEach(dep => {
       if (dep.module) {
         this.findDependencies(dep.module, result);
       }
@@ -120,14 +121,14 @@ function WebpackPluginGraphqlSchemaHot(options) {
     return result;
   };
 
-  this.handleCommonErrors = (e) => {
+  this.handleCommonErrors = e => {
     if (e && e.message) {
       if (e.message.indexOf('multiple versions of GraphQL')) {
         this.err(
           'Multiple versions of GraphQL installed in your node_modules directory.\n' +
-          '  - Please completely remove node_modules folder and re-install all packages from scratch.\n' +
-          '  - OR go to node_modules/webpack-plugin-graphql-schema-hot/node_modules/ and remove graphql-js package from there.\n' +
-          'This package uses `graphql-js` as peerDependency, so if you got this error then it seems that your package manager by mistake install multiple `graphql-js` packages.'
+            '  - Please completely remove node_modules folder and re-install all packages from scratch.\n' +
+            '  - OR go to node_modules/webpack-plugin-graphql-schema-hot/node_modules/ and remove graphql-js package from there.\n' +
+            'This package uses `graphql-js` as peerDependency, so if you got this error then it seems that your package manager by mistake install multiple `graphql-js` packages.'
         );
       } else {
         this.err(e.message);
@@ -143,18 +144,20 @@ function WebpackPluginGraphqlSchemaHot(options) {
     const schema = require(schemaPath).default || require(schemaPath);
 
     if (jsonPath) {
-      graphql.graphql(schema, graphql.introspectionQuery).then((result) => {
-        if (result.errors) {
-          this.err('In schema introspection: \n' + JSON.stringify(result.errors, null, 2));
-        } else {
-          fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
-          this.log('Write new ' + jsonPath);
-        }
-      })
-      .catch((e) => this.handleCommonErrors(e))
-      .then(() => {
-        if (done) done();
-      });
+      graphql
+        .graphql(schema, graphql.introspectionQuery)
+        .then(result => {
+          if (result.errors) {
+            this.err('In schema introspection: \n' + JSON.stringify(result.errors, null, 2));
+          } else {
+            fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+            this.log('Write new ' + jsonPath);
+          }
+        })
+        .catch(e => this.handleCommonErrors(e))
+        .then(() => {
+          if (done) done();
+        });
     }
 
     if (txtPath) {
@@ -172,13 +175,12 @@ function WebpackPluginGraphqlSchemaHot(options) {
     }
   };
 
-  this.buildSchema = (done) => {
+  this.buildSchema = done => {
     try {
       if (typeof this.output === 'function') {
-        Promise
-          .resolve(this.output(this.schemaPath))
+        Promise.resolve(this.output(this.schemaPath))
           .then(() => done())
-          .catch((e) => {
+          .catch(e => {
             this.err('\n' + e);
             done();
           });
@@ -197,7 +199,7 @@ function WebpackPluginGraphqlSchemaHot(options) {
   };
 }
 
-WebpackPluginGraphqlSchemaHot.prototype.start = function (compiler, done) {
+WebpackPluginGraphqlSchemaHot.prototype.start = function(compiler, done) {
   if (this._isFirstRun && this.runOnStart) {
     this.log('Build GraphQL Schema files due opts.runOnStart = true');
     this.buildSchema(() => {
@@ -213,7 +215,7 @@ WebpackPluginGraphqlSchemaHot.prototype.start = function (compiler, done) {
   }
 };
 
-WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, done) {
+WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function(compilation, done) {
   if (!this._canRun) {
     done();
     return;
@@ -256,7 +258,7 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function (compilation, do
   this.rebuildTimestamp = result.lastBuildTimestamp;
 };
 
-WebpackPluginGraphqlSchemaHot.prototype.apply = function (compiler) {
+WebpackPluginGraphqlSchemaHot.prototype.apply = function(compiler) {
   this.compiler = compiler;
   compiler.plugin('run', this.start.bind(this));
   compiler.plugin('watch-run', this.start.bind(this));
