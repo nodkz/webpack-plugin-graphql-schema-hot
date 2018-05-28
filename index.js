@@ -222,7 +222,11 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function(compilation, don
   }
 
   // Skip watching for separate ExtractTextPlugin compilations
-  if (compilation.name && compilation.name.indexOf('extract-text-webpack-plugin') === 0) {
+  if (
+    compilation.name &&
+    (compilation.name.indexOf('extract-text-webpack-plugin') === 0 ||
+      compilation.name.indexOf('mini-css-extract-plugin') === 0)
+  ) {
     done();
     return;
   }
