@@ -264,9 +264,18 @@ WebpackPluginGraphqlSchemaHot.prototype.afterCompile = function(compilation, don
 
 WebpackPluginGraphqlSchemaHot.prototype.apply = function(compiler) {
   this.compiler = compiler;
-  compiler.plugin('run', this.start.bind(this));
-  compiler.plugin('watch-run', this.start.bind(this));
-  compiler.plugin('after-compile', this.afterCompile.bind(this));
+  if (compiler.hooks) {
+    // Webpack 4
+    const name = 'WebpackPluginGraphqlSchemaHot';
+    compiler.hooks.run.tapAsync(name, this.start.bind(this));
+    compiler.hooks.watchRun.tapAsync(name, this.start.bind(this));
+    compiler.hooks.afterCompile.tapAsync(name, this.afterCompile.bind(this));
+  } else {
+    // Webpack 3
+    compiler.plugin('run', this.start.bind(this));
+    compiler.plugin('watch-run', this.start.bind(this));
+    compiler.plugin('after-compile', this.afterCompile.bind(this));
+  }
 };
 
 module.exports = WebpackPluginGraphqlSchemaHot;
